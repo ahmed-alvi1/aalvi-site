@@ -1,9 +1,408 @@
 <!doctype html>
-<html>
-  <body>
-    <h1>aalvi.com</h1>
-    <p>Choose a tool:</p>
-    <a href="/span/index.html">Linear Span</a><br>
-    <a href="/transformations/index.html">Transformations</a>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>aalvi.com — Interactive Linear Algebra</title>
+  <meta name="description" content="Minimal, interactive linear algebra tools: span and transformations." />
+
+  <!-- Clean font (optional). If you want zero external deps, delete this line. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b0f19;
+      --panel: rgba(255,255,255,0.06);
+      --panel-strong: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --line: rgba(255,255,255,0.12);
+      --accent: #7c3aed;        /* purple */
+      --accent-2: #22c55e;      /* green */
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --radius: 18px;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height: 100%; }
+    body{
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(1000px 500px at 20% 10%, rgba(124,58,237,0.24), transparent 55%),
+        radial-gradient(900px 500px at 80% 35%, rgba(34,197,94,0.14), transparent 55%),
+        radial-gradient(1200px 700px at 50% 90%, rgba(255,255,255,0.06), transparent 60%),
+        var(--bg);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .wrap{
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+
+    /* Top bar */
+    .topbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 6px 22px;
+    }
+
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.9), rgba(34,197,94,0.75));
+      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .logo::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: conic-gradient(from 120deg, transparent, rgba(255,255,255,0.25), transparent);
+      animation: spin 10s linear infinite;
+      filter: blur(2px);
+      opacity: 0.65;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* simple “math mark” inside */
+    .logo svg{
+      position: relative;
+      z-index: 1;
+      width: 26px;
+      height: 26px;
+      opacity: 0.95;
+    }
+
+    .brand-title{
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .brand-title strong{
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .brand-title span{
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .pill{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    /* Hero */
+    .hero{
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-left{
+      padding: 24px 22px 18px;
+      position: relative;
+    }
+
+    .kicker{
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1{
+      margin: 10px 0 10px;
+      font-size: 40px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    @media (max-width: 520px){
+      h1{ font-size: 32px; }
+    }
+
+    .math{
+      font-family: "STIX Two Text", Georgia, serif;
+      font-weight: 600;
+    }
+
+    .sub{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 0 18px;
+      max-width: 62ch;
+    }
+
+    .actions{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 4px 0 6px;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-weight: 600;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      user-select: none;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .btn.primary{
+      border-color: rgba(124,58,237,0.45);
+      background: linear-gradient(180deg, rgba(124,58,237,0.22), rgba(124,58,237,0.10));
+    }
+    .btn.secondary{
+      border-color: rgba(34,197,94,0.35);
+      background: linear-gradient(180deg, rgba(34,197,94,0.16), rgba(34,197,94,0.08));
+    }
+
+    .btn .icon{
+      width: 22px; height: 22px;
+      display: grid; place-items: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    /* Right panel: “More tools coming soon” */
+    .hero-right{
+      padding: 18px 18px 16px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .mini{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .mini h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    .mini p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .tagrow{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tag{
+      font-size: 12px;
+      color: rgba(255,255,255,0.74);
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    /* Section below hero */
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
+
+    .feature{
+      padding: 16px;
+    }
+    .feature b{
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+    .feature span{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      display: block;
+    }
+
+    footer{
+      margin-top: 22px;
+      color: rgba(255,255,255,0.55);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 0 6px;
+    }
+    footer a{
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,0.25);
+    }
+    footer a:hover{ color: rgba(255,255,255,0.92); }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <!-- Minimal “math-ish” logo: basis vectors -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 19V6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M5 19H18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M5 19L15 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="15" cy="9" r="2" fill="white"/>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <strong>aalvi.com</strong>
+          <span>interactive linear algebra</span>
+        </div>
+      </a>
+
+      <div class="pill">Minimal • Fast • No login</div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="card hero-left">
+        <div class="kicker">Choose a tool</div>
+        <h1>
+          Learn <span class="math">span</span> and <span class="math">linear maps</span><br/>
+          by playing with them.
+        </h1>
+        <p class="sub">
+          Two focused tools, built for intuition first: drag vectors, see geometry, then connect it back to the formal definitions.
+        </p>
+
+        <div class="actions">
+          <!-- Use explicit index.html if you prefer: /span/index.html -->
+          <a class="btn primary" href="/span/index.html">
+            <span class="icon">⟂</span>
+            Linear Span
+          </a>
+
+          <a class="btn secondary" href="/transformations/index.html">
+            <span class="icon">↦</span>
+            Transformations
+          </a>
+        </div>
+      </div>
+
+      <div class="card hero-right">
+        <div class="mini">
+          <h3>More tools coming soon</h3>
+          <p>
+            I’m adding small, high-signal modules (no clutter) as I build them.
+          </p>
+          <div class="tagrow">
+            <div class="tag">Eigenvectors</div>
+            <div class="tag">Determinants</div>
+            <div class="tag">Rank & Nullity</div>
+            <div class="tag">SVD</div>
+          </div>
+        </div>
+
+        <div class="mini">
+          <h3>Design philosophy</h3>
+          <p>
+            Minimal UI, math-forward typography, and “see it happen” interactions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="grid">
+      <div class="card feature">
+        <b>Intuition → Formalism</b>
+        <span>Start with geometry and examples. Then translate what you saw into definitions and proofs.</span>
+      </div>
+      <div class="card feature">
+        <b>Student-friendly defaults</b>
+        <span>Small inputs, readable labels, and smooth interactions — not a million buttons.</span>
+      </div>
+      <div class="card feature">
+        <b>Built to be extended</b>
+        <span>Each tool is a separate page, so adding new modules is just adding a folder.</span>
+      </div>
+    </div>
+
+    <footer>
+      <div>© <span id="year"></span> aalvi.com</div>
+      <div>
+        <a href="/span/index.html">Span</a> ·
+        <a href="/transformations/index.html">Transformations</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Tiny convenience: auto-update the copyright year.
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
