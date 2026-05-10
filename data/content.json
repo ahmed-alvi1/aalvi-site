@@ -1,0 +1,133 @@
+{
+  "profile": {
+    "name": "Aalvi",
+    "tagline": "CS Student · Builder · Researcher",
+    "bio": "Passionate about building tools that make complex ideas accessible. Currently exploring the intersection of technology, education, and social impact.",
+    "email": "",
+    "socialLinks": {
+      "github": "",
+      "linkedin": "",
+      "email": ""
+    }
+  },
+  "projects": [
+    {
+      "id": "ascendia",
+      "title": "Ascendia",
+      "description": "A web platform currently in development.",
+      "techStack": [],
+      "link": "https://ascendia.best",
+      "image": "",
+      "featured": true
+    },
+    {
+      "id": "dhakla",
+      "title": "Dhakla",
+      "description": "A web project currently in development.",
+      "techStack": [],
+      "link": "https://dhakla.com",
+      "image": "",
+      "featured": true
+    }
+  ],
+  "courses": {
+    "semesters": [
+      {
+        "name": "Freshman Fall",
+        "period": "Fall 2025",
+        "courses": [
+          { "code": "PHYS", "name": "Mechanics" },
+          { "code": "MATH", "name": "Calculus I" },
+          { "code": "CS 100", "name": "Computational Problem Solving" },
+          { "code": "SS 101", "name": "Islamic Studies" },
+          { "code": "BIO 101", "name": "Biology I" },
+          { "code": "CHEM 101", "name": "Chemistry I" }
+        ]
+      },
+      {
+        "name": "Freshman Spring",
+        "period": "Spring 2026",
+        "courses": [
+          { "code": "CS 200", "name": "Introduction to Computer Science" },
+          { "code": "PHYS", "name": "Modern Physics" },
+          { "code": "CHEM 100", "name": "Chemistry" },
+          { "code": "BIO 100", "name": "Biology" },
+          { "code": "LA", "name": "Liberal Arts Honours" }
+        ]
+      }
+    ]
+  },
+  "courseProjects": [
+    {
+      "id": "library-tracker",
+      "title": "Library Book Tracker",
+      "description": "A library management system with built-in fuzzy matching for intelligent book search and discovery. Allows users to track their reading, manage book collections, and find similar titles even with typos or partial queries.",
+      "techUsed": [],
+      "features": [
+        "Fuzzy string matching for intelligent search",
+        "Book collection management",
+        "Reading progress tracking"
+      ],
+      "link": "",
+      "semester": "Freshman Year"
+    }
+  ],
+  "research": [
+    {
+      "id": "food-insecurity",
+      "title": "Food Insecurity in Pakistan",
+      "abstract": "An exploration of the systemic factors contributing to food insecurity across Pakistan, examining economic, environmental, and policy dimensions that affect food access and distribution.",
+      "link": "",
+      "date": "2025",
+      "status": "Completed"
+    },
+    {
+      "id": "ai-marginalized",
+      "title": "AI and Its Impact on Marginalized Groups",
+      "abstract": "A critical examination of how artificial intelligence systems affect marginalized communities, exploring bias in algorithms, accessibility challenges, and the ethical implications of AI deployment.",
+      "link": "",
+      "date": "2025",
+      "status": "Completed"
+    }
+  ],
+  "coding": {
+    "languages": [
+      { "name": "C++", "level": "Intermediate", "percentage": 65, "icon": "⚡" },
+      { "name": "C", "level": "Intermediate", "percentage": 60, "icon": "⚙️" },
+      { "name": "Python", "level": "Basic", "percentage": 35, "icon": "🐍" },
+      { "name": "Visual Basic", "level": "Intermediate", "percentage": 55, "icon": "🔷" }
+    ],
+    "websites": [
+      {
+        "name": "Ascendia",
+        "url": "https://ascendia.best",
+        "description": "Web platform — link coming soon"
+      },
+      {
+        "name": "Dhakla",
+        "url": "https://dhakla.com",
+        "description": "Web project — link coming soon"
+      }
+    ]
+  },
+  "experience": [],
+  "blog": [],
+  "tools": [
+    {
+      "id": "span",
+      "name": "Linear Span Visualizer",
+      "description": "Drag vectors, see geometry, and connect it back to formal definitions. An interactive tool for understanding span in linear algebra.",
+      "url": "tools/span/index.html",
+      "icon": "⟂",
+      "category": "Linear Algebra"
+    },
+    {
+      "id": "transformations",
+      "name": "Linear Transformations",
+      "description": "Visualize and interact with linear maps. See how transformations affect vector spaces in real-time.",
+      "url": "tools/transformations/index.html",
+      "icon": "↦",
+      "category": "Linear Algebra"
+    }
+  ]
+}
